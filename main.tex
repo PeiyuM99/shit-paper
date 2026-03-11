@@ -1,0 +1,389 @@
+\documentclass[UTF8,twocolumn,a4paper]{ctexart}
+
+\usepackage{amsmath,amssymb,amsfonts,bm}
+\usepackage{booktabs}
+\usepackage{cite}
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{multirow}
+\usepackage{array}
+\usepackage{hyperref}
+\usepackage{abstract}
+\usepackage{mathtools}
+
+\geometry{
+  left=1.55cm,
+  right=1.55cm,
+  top=1.8cm,
+  bottom=2.0cm,
+  columnsep=0.65cm
+}
+
+\setlength{\parindent}{2em}
+\setlength{\parskip}{0.2em}
+
+\title{\heiti 基于旋量理论的博士生心理健康动力学建模\\与多源压力约束下的奇点分析}
+\author{匿名博士生研究联盟}
+\date{}
+
+\newtheorem{proposition}{命题}
+\newtheorem{remark}{注}
+
+\begin{document}
+
+\maketitle
+\begin{abstract}
+本文提出一种基于旋量理论与李群李代数框架的博士生心理健康动力学建模方法。首先，将博士生精神状态抽象为特殊欧氏群 $SE(3)$ 上的位姿演化，进而定义心理旋量、心理螺距、压力广义力旋量及其在多源社会载荷下的耦合动力学。其次，将导师催稿、同龄人比较与家庭伴侣期望分别建模为高频激振力矩、伴随变换诱导的势能差映射及非完整约束，并在此基础上构造心理雅可比矩阵，分析 $\det(J)=0$ 时系统出现的运动学奇点与精神自锁现象。进一步地，借助互反螺旋理论证明，当个人努力方向与社会期望方向互反时，系统虚功恒为零，从而导致一种具有显著耗能但几乎无可观测产出的学术原地踏步状态。案例分析表明，掉发、失眠、深夜刷新邮箱与无意义修改摘要标题等现象，均可视作系统在奇异邻域内的典型非线性耗散响应。本文虽属学术讽刺性建模，但其数学结构与机械解释保持严格自洽，可为博士生群体的群体性动力学失稳研究提供新的理论视角。
+\end{abstract}
+
+\section{引言}
+
+旋量理论与李群方法在机器人机构学、刚体运动学及广义力分析中具有重要地位\cite{ball,murray,lynch,angeles}。在经典机械系统中，位姿、速度、力与约束可分别由群元素、旋量、力旋量与约束分布统一表述，使复杂耦合问题获得清晰的几何解释。与此同时，博士生作为一个长期处于低睡眠、高任务密度与多主体评价体系之下的动力学实体，其心理演化过程同样表现出明显的多源载荷输入、欠驱动特征、非线性响应与奇异退化行为。
+
+现有关于博士生心理状态的讨论，多停留于叙事层面，缺乏可供推导、可供仿真、也无法解释“明明一天忙了十五个小时但论文一个字没动”这一典型现象的统一数学框架。事实上，这种现象与欠驱动并联机构在奇异位形附近的异常响应具有惊人的拓扑相似性。特别是当导师压力、同龄人压力与家庭伴侣压力同时作用时，系统常出现如下三种异常工况：
+
+\begin{enumerate}
+  \item \textbf{高频激振工况}：夜间消息提示音触发角向焦虑速度瞬时增大。
+  \item \textbf{势差塌陷工况}：朋友圈中同龄人连续发表高水平论文，引起势函数突变。
+  \item \textbf{约束收缩工况}：逢年过节期间，系统可行速度空间显著降维。
+\end{enumerate}
+
+为此，本文在经典旋量理论框架下，建立博士生心理健康动力学模型，并系统讨论以下问题：
+
+\begin{itemize}
+  \item 如何将博士生精神状态严格建模为 $SE(3)$ 上的位姿；
+  \item 如何定义具有明确物理意义的心理旋量与心理螺距；
+  \item 如何刻画三类主导外载荷及其耦合方式；
+  \item 如何通过心理雅可比矩阵分析精神自锁与学术停滞；
+  \item 为什么个人努力可以长期非零，但社会意义上的输出功率却严格为零。
+\end{itemize}
+
+本文的核心观点是：博士生崩溃并非单纯的标量疲劳累积，而是一个具有几何结构、受多约束作用并可能发生奇异退化的高维动力学问题。
+
+\section{理论建模}
+
+\subsection{博士生精神状态的群表示}
+
+设博士生在时刻 $t$ 的心理状态由位姿
+\begin{equation}
+g(t)=
+\begin{bmatrix}
+R(t) & p(t)\\
+0 & 1
+\end{bmatrix}\in SE(3)
+\end{equation}
+描述，其中 $R(t)\in SO(3)$ 表示认知取向矩阵，反映其对课题意义、人生价值与投稿前景的主观判断方向；$p(t)\in\mathbb{R}^3$ 为情绪位移向量，可分别解释为信心、专注度与生命活力在抽象心理空间中的坐标。
+
+系统的无穷小运动由心理旋量 $\hat{\xi}\in\mathfrak{se}(3)$ 表示：
+\begin{equation}
+\hat{\xi}=
+\begin{bmatrix}
+\hat{\omega} & v\\
+0 & 0
+\end{bmatrix},\qquad
+\xi=
+\begin{bmatrix}
+v\\
+\omega
+\end{bmatrix}\in\mathbb{R}^6,
+\end{equation}
+并满足群运动方程
+\begin{equation}
+\dot{g}=g\hat{\xi}.
+\end{equation}
+
+其中，$\omega\in\mathbb{R}^3$ 表示认知姿态角速度，反映“我是不是该转方向了”的思维旋转速率；$v\in\mathbb{R}^3$ 则表示情绪平移速度，反映“虽然方向变了但人并没有更好”的漂移趋势。
+
+\subsection{心理螺距的定义与物理意义}
+
+对非纯平移旋量，定义心理螺距为
+\begin{equation}
+h=\frac{\omega^\top v}{\omega^\top \omega}.
+\end{equation}
+其物理意义为：单位认知旋转所引起的沿心理主轴方向的净情绪推进量。若 $h>0$，则说明每次“想通一点”都能换来真实进展；若 $h=0$，则说明系统处于高频自我反思但零净前进状态；若 $h<0$，则表明每次重新规划都会让论文离完成更远。
+
+\begin{remark}
+在实际博士生系统中，最危险的并非 $h$ 很小，而是长期稳定维持在一个看似非零但始终无法累计有效位移的区间。该状态通常伴随“文件夹命名越来越规范，但正文一字未增”的症状。
+\end{remark}
+
+\subsection{广义力旋量建模}
+
+博士生系统的广义外载荷记为
+\begin{equation}
+W=
+\begin{bmatrix}
+f\\
+\tau
+\end{bmatrix}\in\mathbb{R}^6,
+\end{equation}
+其中 $f$ 表示情绪合力，$\tau$ 表示认知合力矩。本文重点考虑三类主导载荷。
+
+\subsubsection{导师压力 $W_A$}
+
+导师压力本质上表现为高频激振力矩，特别在“在吗”“进度如何”“你这个图能不能再精炼一下”等输入作用下，可近似建模为
+\begin{equation}
+W_A(t)=
+\begin{bmatrix}
+0\\
+\tau_0\sin(\Omega_A t+\phi_A)
+\end{bmatrix}
++\sum_{k=1}^{N_m}
+\kappa_k\delta(t-t_k)e_6,
+\end{equation}
+其中 $\tau_0$ 为平均催稿幅值，$\Omega_A$ 为催稿频率，$\phi_A$ 为导师当前心情相位，$\delta(\cdot)$ 表示深夜消息脉冲，$e_6$ 表示该冲击主要作用于“自我否定偏航轴”。
+
+该力旋量的显著特征在于其高频、小字数、强穿透。其总冲量虽不总是最大，但对系统稳定性贡献极高。
+
+\subsubsection{同龄人压力 $W_P$}
+
+设基准同龄人状态为 $g_b\in SE(3)$，例如“本科同学已评上副教授”或“隔壁师兄三篇一区外加婚房首付已齐”。令
+\begin{equation}
+\eta=\mathrm{Log}\left(g_b^{-1}g\right)^\vee\in\mathbb{R}^6
+\end{equation}
+为当前状态相对同龄人基准的李代数误差，则同龄人势函数记为
+\begin{equation}
+U_P(g)=\frac{1}{2}\eta^\top K_P \eta,
+\end{equation}
+其中 $K_P$ 为比较敏感度矩阵。
+
+由势函数诱导的广义力旋量写为
+\begin{equation}
+W_P=-\mathrm{Ad}_g^{-T}K_P\eta.
+\end{equation}
+上式表明，同龄人压力并非直接施加在全局坐标系中，而是需通过伴随变换映射到当前博士生的心理坐标系内。也即，别人发论文并不一定直接伤害你，真正伤害你的是你把那条消息解释到自己坐标系中的方式。
+
+\subsubsection{家庭与伴侣压力 $W_F$}
+
+家庭与伴侣压力更适合作为非完整约束引入，而非简单外力。这是因为其本质不是推动系统向某方向运动，而是限制系统“不能再这样下去”。故设存在约束分布
+\begin{equation}
+A_F(g)\xi=0,
+\end{equation}
+其中 $A_F(g)\in\mathbb{R}^{m\times 6}$ 为约束矩阵。相应约束力旋量写为
+\begin{equation}
+W_F=A_F^\top(g)\lambda,
+\end{equation}
+$\lambda\in\mathbb{R}^m$ 为拉格朗日乘子，代表“你到底什么时候毕业”“以后准备在哪发展”“你总不能一直这么忙吧”等约束反力强度。
+
+需要强调的是，非完整约束最可怕之处在于其不一定约束位置，但会严格约束允许的速度方向。也就是说，系统看似还有很多人生可能性，但瞬时可行速度空间已经明显缩小。
+
+\subsection{动力学方程}
+
+综合上述载荷，可将博士生系统动力学方程写为
+\begin{equation}
+M(g)\dot{\xi}+\mathrm{ad}_{\xi}^*M(g)\xi + D(g)\xi + \nabla_g U_P
+= W_A + W_F + W_R,
+\label{eq:dynamics}
+\end{equation}
+其中 $M(g)$ 为心理惯性矩阵，表征过去创伤、学术训练与自我要求所共同形成的惯性特征；$D(g)$ 为耗散矩阵，反映睡眠不足、咖啡因耐受与持续社交回避带来的阻尼变化；$W_R$ 为恢复性内力，例如有效休息、阶段性认可与偶然完成一个漂亮图后的短暂幸福。
+
+在多数真实工况下，式 \eqref{eq:dynamics} 呈现明显的非自治、欠驱动、带约束特征，且其平衡点往往不稳定或根本不存在。
+
+\section{心理雅可比矩阵与奇点分析}
+
+\subsection{心理雅可比矩阵的构造}
+
+设博士生内部可控变量为
+\begin{equation}
+q=
+\begin{bmatrix}
+q_1 & q_2 & q_3 & q_4 & q_5 & q_6
+\end{bmatrix}^\top,
+\end{equation}
+分别对应睡眠补偿、咖啡摄入、文献阅读、代码调试、社交回避与拖延合理化六个内禀自由度。则心理旋量与内变量速度的关系为
+\begin{equation}
+\xi = J(q)\dot{q},
+\end{equation}
+其中 $J(q)\in\mathbb{R}^{6\times 6}$ 为心理雅可比矩阵。
+
+\subsection{奇点与精神自锁}
+
+当
+\begin{equation}
+\det(J)=0
+\end{equation}
+时，系统出现运动学奇点。此时，至少存在一个非零向量 $\dot{q}_0\neq 0$ 使得
+\begin{equation}
+J(q)\dot{q}_0=0.
+\end{equation}
+这意味着内部控制动作非零，但外部心理位姿增量为零。
+
+\begin{proposition}
+若 $\mathrm{rank}(J)<6$，则存在内耗模态使系统在消耗显著能量的同时保持宏观状态不变，此即精神自锁现象。
+\end{proposition}
+
+\noindent\textbf{证明：}
+由秩亏性质，$\ker(J)$ 非空。取任意 $\dot{q}_0\in\ker(J)$ 且 $\dot{q}_0\neq 0$，有 $\xi=J\dot{q}_0=0$。由 $\dot{g}=g\hat{\xi}$ 得
+\begin{equation}
+\dot{g}=0.
+\end{equation}
+因此系统宏观位姿保持不变。然而内部代谢消耗
+\begin{equation}
+\mathcal{E}=\frac{1}{2}\dot{q}_0^\top H(q)\dot{q}_0
+\end{equation}
+严格大于零，其中 $H(q)$ 为内变量能量度量矩阵。故系统呈现“非常忙但没有任何推进”的典型状态。证毕。
+
+\begin{remark}
+上述命题解释了一个长期困扰学界的现象：为什么一个人可以从早上九点坐到凌晨两点，期间开了十七个标签页、改了三十次标题、重构了两遍代码框架，最终却只得到一个新的文件名 final\_v7\_really\_final。
+\end{remark}
+
+\subsection{奇异邻域中的速度爆发}
+
+在目标心理旋量 $\xi_d$ 给定时，广义逆控制律写为
+\begin{equation}
+\dot{q}=J^\# \xi_d + \left(I-J^\#J\right)z,
+\end{equation}
+其中 $J^\#$ 为广义逆，$z$ 为零空间内自由调节量。当系统逼近奇异位形时，$\|J^\#\|$ 急剧增大，从而导致
+\begin{equation}
+\|\dot{q}\|\rightarrow \infty.
+\end{equation}
+该结论的心理学含义十分明确，即当临近截稿期限、任务仍远未完成且外界持续施压时，博士生将尝试通过无限提高局部执行速度来弥补全局可达性的不足。其外在表现通常包括但不限于：
+
+\begin{enumerate}
+  \item 同时打开超过八个仿真窗口；
+  \item 在一分钟内连续修改三次摘要第一句；
+  \item 以为再喝一杯咖啡就能把雅可比行列式喝回非零。
+\end{enumerate}
+
+\section{互反螺旋与学术原地踏步}
+
+经典旋量理论指出，若力旋量 $W$ 与运动旋量 $\xi$ 互反，则其瞬时功率为零：
+\begin{equation}
+\mathcal{P}=W^\top \xi = 0.
+\end{equation}
+这一关系在博士生系统中具有极强解释力。
+
+设个人努力方向为 $\xi_E$，社会期望方向为 $W_S$。当二者互反时，有
+\begin{equation}
+W_S^\top \xi_E = 0.
+\end{equation}
+这意味着，无论个体主观努力多大，其在外部评价体系中的可观测有效功率恒为零。
+
+\begin{proposition}
+若博士生当前努力旋量 $\xi_E$ 与社会期望广义力旋量 $W_S$ 互反，则系统存在非零努力而零外部进展的稳定模式。
+\end{proposition}
+
+\noindent\textbf{证明：}
+设外部进展指标为标量函数 $y(g)$，其瞬时变化率可写为
+\begin{equation}
+\dot{y}=G(g)^\top \xi_E,
+\end{equation}
+其中 $G(g)$ 为评价映射方向。若社会评价等价于在广义力意义下选取方向 $W_S$，则有效输入功率为
+\begin{equation}
+\mathcal{P}_{\mathrm{ext}}=W_S^\top \xi_E.
+\end{equation}
+当 $W_S$ 与 $\xi_E$ 互反时，$\mathcal{P}_{\mathrm{ext}}=0$。因此系统可以在内部空间内持续运动，但不会在外部评价指标上产生净增长。证毕。
+
+上述命题可以形象地解释为：你很努力，但努力的那个方向恰好没有人看。比如你用三周时间把附录推导从“能看懂”改到了“极其优雅”，但评审只在意为什么实验样本数不是三十而是二十八。
+
+更进一步，由旋量互反关系对坐标变换不变，可知即便改变研究方向表述、会议场地、甚至头像风格，只要社会期望结构未变，原地踏步就具有参考系无关性。
+
+\section{案例分析}
+
+为分析多源压力耦合下的系统响应，本文考虑三类典型工况，并给出定性动力学特征，如表 \ref{tab:case} 所示。
+
+\begin{table*}[t]
+\centering
+\caption{典型工况下博士生心理动力学响应}
+\label{tab:case}
+\begin{tabular}{p{2.9cm} p{3.4cm} p{4.1cm} p{5.0cm}}
+\toprule
+工况名称 & 主导参数变化 & 动力学特征 & 典型外在表现 \\
+\midrule
+截稿前七日工况 &
+$\Omega_A$ 升高，$\tau_0$ 增大，$D(g)$ 非线性下降 &
+高频激振接近系统固有频率，导致焦虑模态共振；广义逆范数迅速放大 &
+邮件秒回，凌晨三点仍在调图；掉发速度呈指数级增长，可视为质量特性随时间的非线性耗散 \\
+
+同龄人捷报工况 &
+$\|K_P\|$ 增大，$g_b$ 突然跃迁 &
+势能井突变，系统自我定位发生急剧偏置；相对误差李代数向量范数激增 &
+连续刷新社交平台，短时间内完成“羡慕、怀疑、振作、再次怀疑”四阶段切换 \\
+
+节日返乡工况 &
+约束维数 $m$ 增大，$A_F(g)$ 作用增强 &
+可行速度空间降维，局部自由方向受限；系统更易进入奇异邻域 &
+围坐餐桌时无法解释研究内容，但必须解释人生规划；出现长时间低头扒饭的被动稳定模式 \\
+\bottomrule
+\end{tabular}
+\end{table*}
+
+\subsection{线性化分析}
+
+在某平衡点 $\bar{g}$ 附近作线性化，记状态偏差为 $x$，则有
+\begin{equation}
+M_0\dot{x}+D_0x+K_0x = B_Au_A + B_Pu_P + A_{F0}^\top \lambda.
+\label{eq:linear}
+\end{equation}
+其中 $u_A,u_P$ 分别表示导师与同龄人输入。若导师激振频率接近系统主模态频率 $\omega_n$，即
+\begin{equation}
+\Omega_A \approx \omega_n,
+\end{equation}
+则由共振机理可知，系统振幅迅速增大。对应现实语境，即“本来还撑得住，但一句‘你这个故事线还不够强’足以令整个状态空间瞬间发散”。
+
+\subsection{奇异路径依赖}
+
+值得注意的是，博士生系统的奇异性并不总由瞬时参数决定，而与历史路径高度相关。若长期处于高约束、低恢复工况，则即便当前外载荷不大，系统也可能停留在一个拓扑上难以逃离的奇异邻域内。该现象类似于具有摩擦记忆与结构迟滞的柔顺机构。其心理版本表现为：明明今天没人催，自己也会下意识点开邮箱确认有没有人催。
+
+\section{讨论}
+
+本文模型虽采用明显夸张的学术表述，但其结构揭示了几个值得严肃对待的事实。
+
+第一，博士生系统并非简单单输入单输出过程，而是一个受到多主体评价共同作用的高维耦合系统。任何将其简化为“你再努力一点就好了”的线性标量说法，都忽略了约束、奇点与能量通道不匹配的问题。
+
+第二，精神崩溃往往不是由单一大载荷直接造成，而是由多类中等载荷在几何上耦合后，将系统推入秩亏邻域。一旦进入该区域，系统的局部可控性、可观测性与恢复能力都会显著下降。
+
+第三，互反螺旋视角说明，努力本身并不自动等价于产出。只有当努力方向与评价力旋量不互反时，外部世界才会承认你的功。否则你只是从一个非常复杂的角度把自己累坏了。
+
+\section{结论}
+
+本文基于旋量理论与李群李代数方法，构建了博士生心理健康动力学模型，并将其统一表述为 $SE(3)$ 上受多源载荷与非完整约束共同作用的复杂系统。主要结论如下：
+
+\begin{enumerate}
+  \item 博士生精神状态可严格表示为群位姿演化，心理旋量与心理螺距分别对应瞬时状态变化方向与单位认知旋转下的净情绪推进量。
+  \item 导师压力可视为高频激振力矩，同龄人压力可由伴随变换诱导的势能差映射表征，家庭与伴侣压力更适合作为非完整约束处理。
+  \item 当心理雅可比矩阵满足 $\det(J)=0$ 时，系统进入奇异状态，出现内部高耗能而外部零位移的精神自锁。
+  \item 当个人努力方向与社会期望方向互反时，虚功为零，导致持续忙碌但学术进展近似停滞的原地踏步现象。
+\end{enumerate}
+
+归根结底，博士生掉发、失眠、沉迷改图以及对“最近进展如何”这句话产生条件反射，不应被粗暴理解为意志品质问题，而更应被视为一个多载荷、欠驱动、近奇异机械系统的自然响应。未来工作可进一步考虑睡眠恢复项的时变建模、基金申请冲击的随机扰动建模，以及如何通过引入真正的假期实现系统从奇异流形上的可逆脱离。
+
+\begin{thebibliography}{99}
+
+\bibitem{ball}
+R. S. Ball,
+\newblock \emph{A Treatise on the Theory of Screws},
+\newblock Cambridge University Press, 1900.
+
+\bibitem{murray}
+R. M. Murray, Z. Li, and S. S. Sastry,
+\newblock \emph{A Mathematical Introduction to Robotic Manipulation},
+\newblock CRC Press, 1994.
+
+\bibitem{lynch}
+K. M. Lynch and F. C. Park,
+\newblock \emph{Modern Robotics: Mechanics, Planning, and Control},
+\newblock Cambridge University Press, 2017.
+
+\bibitem{angeles}
+J. Angeles,
+\newblock \emph{Fundamentals of Robotic Mechanical Systems},
+\newblock Springer, 2007.
+
+\bibitem{goffman}
+E. Goffman,
+\newblock \emph{The Presentation of Self in Everyday Life},
+\newblock Doubleday, 1959.
+
+\bibitem{burnout}
+匿名审稿人与未命名导师联合课题组,
+\newblock 博士生在截稿前夜的非线性响应及其不可重复性观察,
+\newblock 某高校内部技术备忘录, 未公开.
+
+\bibitem{coffee}
+深夜咖啡动力学临时工作组,
+\newblock 咖啡因摄入对学术输出雅可比条件数的影响,
+\newblock 传闻性结果, 样本量不足但主观感受极强.
+
+\end{thebibliography}
+
+\end{document}
